@@ -1,0 +1,28 @@
+"""Erfundene Übungs-Fakten, die Pip NUR beibringen, wie er Hinweise ("Neu von Lasse gelernt") nutzt.
+Mit Hinweis beantwortet er daraus, ohne Hinweis sagt er "weiß ich noch nicht": so steckt in der ausgelieferten Fassung kein erfundenes Wissen."""
+SEED = [
+    ("Glorpf", "Ein Glorpf ist ein kleines gelbes Tier mit drei Beinen. Es lebt auf dem Planeten Tarn.", "Wie viele Beine hat ein Glorpf?", "Ein Glorpf hat drei Beine."),
+    ("Planet Tarn", "Tarn ist ein Planet mit zwei Sonnen. Dort ist es immer warm.", "Wie viele Sonnen hat Tarn?", "Tarn hat zwei Sonnen."),
+    ("Mirabo", "Ein Mirabo ist eine Frucht, die blau ist und nach Zimt schmeckt.", "Wie schmeckt ein Mirabo?", "Ein Mirabo schmeckt nach Zimt."),
+    ("Kuppelstadt", "Kuppelstadt ist ein Ort unter einer Glaskuppel. Dort wohnen vierhundert Menschen.", "Wie viele Menschen wohnen in Kuppelstadt?", "In Kuppelstadt wohnen vierhundert Menschen."),
+    ("Frau Henke", "Frau Henke ist die Nachbarin von Tim. Sie gießt jeden Morgen ihre Tomaten.", "Was macht Frau Henke jeden Morgen?", "Sie gießt ihre Tomaten."),
+    ("Tim", "Tim ist ein Freund von Anna. Er spielt gern Gitarre.", "Was spielt Tim gern?", "Tim spielt gern Gitarre."),
+    ("Anna", "Anna wohnt in Rostock. Ihr Fahrrad ist rot.", "Welche Farbe hat Annas Fahrrad?", "Annas Fahrrad ist rot."),
+    ("Zinnober", "Zinnober ist ein roter Farbstoff. Maler benutzen ihn seit vielen hundert Jahren.", "Welche Farbe hat Zinnober?", "Zinnober ist rot."),
+    ("Wolkenbrot", "Wolkenbrot ist ein sehr weiches Brot. Man backt es mit viel Luft im Teig.", "Wie ist Wolkenbrot?", "Wolkenbrot ist sehr weich."),
+    ("Der Leuchtturm von Brik", "Der Leuchtturm von Brik steht auf einer Insel. Er ist vierzig Meter hoch.", "Wie hoch ist der Leuchtturm von Brik?", "Er ist vierzig Meter hoch."),
+    ("Pfeffernuss", "Pfeffernuss ist die Katze von Herrn Dorn. Sie ist grau und schläft viel.", "Wie heißt die Katze von Herrn Dorn?", "Sie heißt Pfeffernuss."),
+    ("Herr Dorn", "Herr Dorn ist Lehrer an einer kleinen Schule. Er mag Schach.", "Was mag Herr Dorn?", "Herr Dorn mag Schach."),
+    ("Sandsturm-Tee", "Sandsturm-Tee ist ein starker Tee. Er kommt aus der Wüste Karum.", "Woher kommt Sandsturm-Tee?", "Er kommt aus der Wüste Karum."),
+    ("Wüste Karum", "Die Wüste Karum ist sehr trocken. Nachts wird es dort kalt.", "Wie ist es nachts in der Wüste Karum?", "Nachts ist es dort kalt."),
+    ("Quibbel", "Ein Quibbel ist ein Spiel mit vier Würfeln. Man braucht mindestens zwei Spieler.", "Wie viele Spieler braucht man für Quibbel?", "Man braucht mindestens zwei Spieler."),
+    ("Bernd der Roboter", "Bernd ist ein kleiner Roboter. Er kann nur Treppen steigen.", "Was kann Bernd?", "Bernd kann Treppen steigen."),
+    ("Sommerfest am See", "Das Sommerfest am See ist im August. Es gibt Musik und Kuchen.", "Wann ist das Sommerfest am See?", "Es ist im August."),
+    ("Lindenallee", "Die Lindenallee ist eine lange Straße mit alten Bäumen. Sie führt zum Bahnhof.", "Wohin führt die Lindenallee?", "Sie führt zum Bahnhof."),
+    ("Kobold Fitz", "Fitz ist ein Kobold in einer Geschichte. Er versteckt gern Schlüssel.", "Was versteckt Fitz gern?", "Fitz versteckt gern Schlüssel."),
+    ("Mondkarte", "Die Mondkarte ist eine alte Karte. Sie zeigt Berge, die es nicht gibt.", "Was zeigt die Mondkarte?", "Sie zeigt Berge, die es nicht gibt."),
+    ("Rübenmus", "Rübenmus ist ein Essen aus gekochten Rüben. Es wird mit Butter serviert.", "Womit wird Rübenmus serviert?", "Es wird mit Butter serviert."),
+    ("Familie Voss", "Familie Voss hat vier Kinder. Sie wohnt im grünen Haus.", "Wie viele Kinder hat Familie Voss?", "Familie Voss hat vier Kinder."),
+    ("Das grüne Haus", "Das grüne Haus steht am Ende der Lindenallee. Es hat ein rotes Dach.", "Welche Farbe hat das Dach vom grünen Haus?", "Das Dach ist rot."),
+    ("Trommelfisch", "Der Trommelfisch macht laute Geräusche unter Wasser. Er lebt in warmen Meeren.", "Wo lebt der Trommelfisch?", "Er lebt in warmen Meeren."),
+]

@@ -1,0 +1,74 @@
+name: Pip-Update
+# Schreibt Pips neu Gelerntes nachts in sein Modell, ohne PC. Läuft nur dann lange, wenn es Neues gibt.
+# Öffentliches Repo: Maschine mit 4 Kernen und 16 GB, Minuten kostenlos. Zugangsdaten nur als Secrets (nie im Log).
+# Nach-Training: lädt die gelernte Schicht des letzten Stands aus dem Zweig "modell" und lernt nur das Neue dazu.
+on:
+  schedule:
+    - cron: "17 1 * * *"   # täglich ca. 02:17/03:17 deutscher Zeit
+  workflow_dispatch:
+    inputs:
+      erzwingen:
+        description: "Auch ohne Neues trainieren"
+        type: boolean
+        default: false
+      probe:
+        description: "Nur Probe: trainieren, aber nichts hochladen und nichts eintragen"
+        type: boolean
+        default: false
+concurrency: pip-update
+permissions:
+  contents: write   # das fertige Modell in den Zweig "modell" legen
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - name: Zugangsdaten da?
+        # ohne Secrets nichts tun (statt jede Nacht mit Fehler abzubrechen)
+        id: chk
+        env: { U: "${{ secrets.SUPABASE2_URL }}", T: "${{ secrets.SUPABASE_APP_TOKEN }}" }
+        run: if [ -n "$U" ] && [ -n "$T" ]; then echo "ok=1" >> "$GITHUB_OUTPUT"; else echo "Secrets fehlen noch, kein Training."; fi
+      - name: Platz schaffen
+        if: steps.chk.outputs.ok == '1'
+        run: sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL && df -h / | tail -1
+      - uses: actions/setup-python@v5
+        if: steps.chk.outputs.ok == '1'
+        with: { python-version: "3.11", cache: pip, cache-dependency-path: pip/requirements.txt }
+      - name: Pakete (nur Prozessor)
+        if: steps.chk.outputs.ok == '1'
+        run: |
+          pip install torch --index-url https://download.pytorch.org/whl/cpu
+          pip install -r pip/requirements.txt
+      - uses: actions/cache@v4
+        if: steps.chk.outputs.ok == '1'
+        with: { path: ~/.cache/huggingface, key: hf-qwen2.5-1.5b-instruct }
+      - uses: actions/cache@v4   # schon erzeugte Frageformen behalten (spart Anfragen an Groq/Mistral)
+        if: steps.chk.outputs.ok == '1'
+        with: { path: pip/modelle/aug-cache.json, key: "aug-${{ github.run_id }}", restore-keys: aug- }
+      - name: Pip-Update
+        if: steps.chk.outputs.ok == '1'
+        working-directory: pip
+        env:
+          SUPABASE2_URL: ${{ secrets.SUPABASE2_URL }}
+          SUPABASE2_PUBLIC_KEY: ${{ secrets.SUPABASE2_PUBLIC_KEY }}
+          SUPABASE_APP_TOKEN: ${{ secrets.SUPABASE_APP_TOKEN }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+          PIP_GH_REPO: ${{ github.repository }}
+          PIP_GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PIP_BS: "4"
+          PIP_CKPT: "1"
+          PIP_INC: "1"        # nur das Neue dazulernen (ein volles Training des größeren Modells dauert Stunden, das macht der PC)
+          PIP_INC_MAX: "4"    # höchstens 4 neue Einträge pro Nacht, der Rest in den nächsten Nächten
+        run: python pip_update.py --auto ${{ inputs.erzwingen && '--force' || '' }} ${{ inputs.probe && '--no-publish' || '' }}
+      - name: Wach halten
+        # GitHub schaltet geplante Abläufe in öffentlichen Repos nach 60 Tagen ohne Änderung ab; alle 40 Tage eine kleine Änderung verhindert das
+        if: always()
+        run: |
+          last=$(git log -1 --format=%ct origin/main)
+          if [ $(( $(date +%s) - last )) -gt $(( 40 * 86400 )) ]; then
+            git config user.name "Velun"; git config user.email "velun@users.noreply.github.com"
+            git checkout -q main && date -u +%F > lebt.txt && git add lebt.txt && git commit -q -m "wach halten" && git push -q origin main
+          fi
